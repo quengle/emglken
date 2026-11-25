@@ -80,7 +80,8 @@ add_sources(hugo "hugo/source/"
 add_sources(hugo "hugo/heglk/"
     SRCS heglk.c heglkunix.c)
 emglken_vm(hugo)
-target_compile_definitions(hugo PRIVATE COMPILE_V25 GLK NO_KEYPRESS_CURSOR HUGO_INLINE=static\ inline)
+# no NO_KEYPRESS_CURSOR, whose "*" stand-in cursor lands mid-line in grid windows
+target_compile_definitions(hugo PRIVATE COMPILE_V25 GLK HUGO_INLINE=static\ inline)
 target_compile_options(hugo PRIVATE -Wall -Wno-unused-but-set-variable)
 target_link_options(hugo PRIVATE -sASYNCIFY_IGNORE_INDIRECT)
 
