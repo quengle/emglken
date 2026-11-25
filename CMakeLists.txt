@@ -100,6 +100,44 @@ emglken_vm(magnetic)
 target_compile_definitions(magnetic PRIVATE MAGNETIC_GLKUNIX QUENGLE)
 target_compile_options(magnetic PRIVATE -include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-magstdio.h -Wno-implicit-function-declaration)
 
+# quengle: scottfree, spatterlight's (scott adams; GPL-2: only in builds with QUENGLE_SCOTT, see HANDOFF). autosave
+# in scott_meta.c (QUENGLE), stdio over glk streams by quengle-stdio.h
+set(GT "garglk/terps/")
+add_executable(scott)
+add_sources(scott "${GT}scott/"
+    SRCS scott.c bsd.c detect_game.c parser.c restore_state.c scott_actions.c scott_display.c scott_game_info.c
+    scott_meta.c title_image.c
+    ai_uk/c64decrunch.c ai_uk/decompress_text.c ai_uk/game_specific.c ai_uk/gremlins.c ai_uk/hulk.c
+    ai_uk/line_drawing.c ai_uk/ringbuffer.c ai_uk/robin_of_sherwood.c ai_uk/sagadraw.c ai_uk/seas_of_blood.c
+    saga/apple2_vector_draw.c saga/apple2detect.c saga/atari8detect.c saga/atari_8bit_vector_draw.c saga/c64_small.c
+    saga/c64a8scott.c saga/saga.c saga/sagagraphics.c saga/vector_common.c
+    ti994a/load_ti99_4a.c ti994a/rtpi_graphics.c ti994a/ti99_4a_terp.c ti994a/ti99_disk.c ti994a/unzip_in_mem.c)
+add_sources(scott "${GT}scott/saga/" SRCS)
+add_sources(scott "${GT}scott/ai_uk/" SRCS)
+add_sources(scott "${GT}scott/ti994a/" SRCS)
+add_sources(scott "${GT}common_sagadraw/" SRCS gm_vector.c apple2draw.c c64a8draw.c gm_artifact.c pcdraw.c)
+add_sources(scott "${GT}common_utils/"
+    SRCS common_file_utils.c common_utils.c companion_search.c layouttext.c memory_allocation.c randomness.c)
+add_sources(scott "${GT}readwoz/" SRCS ciderpress.c woz2nib.c)
+add_sources(scott "${GT}aiukgraphics/" SRCS aiukpalette.c irmak.c taylordraw.c)
+add_sources(scott "${GT}decompressz80/" SRCS alkatraz.c tapetzx.c z80snap.c zxscreen.c)
+add_sources(scott "${GT}common_zxscreen/" SRCS zx_title.c)
+add_sources(scott "${GT}c64diskimage/" SRCS c64diskimage.c)
+add_sources(scott "${GT}unp64/"
+    SRCS 6502_emu.cpp exo_util.cpp unp64.cpp scanners/abuze_crunch.cpp scanners/action_packer.cpp scanners/ar.cpp
+    scanners/byte_boiler.cpp scanners/caution.cpp scanners/ccs.cpp scanners/cruel.cpp scanners/eca.cpp
+    scanners/exomizer.cpp scanners/expert.cpp scanners/final_super_comp.cpp scanners/intros.cpp
+    scanners/master_compressor.cpp scanners/megabyte.cpp scanners/mr_cross.cpp scanners/mr_z.cpp
+    scanners/pu_crunch.cpp scanners/scanners.cpp scanners/section8.cpp scanners/tbc_multicomp.cpp
+    scanners/tcs_crunch.cpp scanners/time_cruncher.cpp scanners/xtc.cpp)
+emglken_vm(scott)
+set_property(TARGET scott PROPERTY CXX_STANDARD 17)
+set_property(TARGET scott PROPERTY C_STANDARD 11)
+target_compile_definitions(scott PRIVATE QUENGLE $<$<COMPILE_LANGUAGE:C>:_XOPEN_SOURCE=600>)
+target_compile_options(scott PRIVATE $<$<COMPILE_LANGUAGE:C>:-include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-stdio.h>
+    --use-port=zlib -Wno-implicit-function-declaration)
+target_link_options(scott PRIVATE --use-port=zlib)
+
 add_executable(scare)
 add_sources(scare "garglk/terps/scare/"
     SRCS os_glk.c scdebug.c scevents.c scexpr.c scgamest.c scinterf.c sclibrar.c
