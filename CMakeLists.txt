@@ -77,11 +77,15 @@ target_link_options(git PRIVATE -sASYNCIFY_IGNORE_INDIRECT)
 add_executable(hugo)
 add_sources(hugo "hugo/source/"
     SRCS he.c heexpr.c hemisc.c heobject.c heparse.c heres.c herun.c heset.c stringfn.c)
+# quengle: heglk.c with pictures (src/quengle-heglk.c includes it)
 add_sources(hugo "hugo/heglk/"
-    SRCS heglk.c heglkunix.c)
+    SRCS heglkunix.c)
+add_sources(hugo "src/"
+    SRCS quengle-heglk.c)
 emglken_vm(hugo)
-# no NO_KEYPRESS_CURSOR, whose "*" stand-in cursor lands mid-line in grid windows
-target_compile_definitions(hugo PRIVATE COMPILE_V25 GLK HUGO_INLINE=static\ inline)
+# quengle: no NO_KEYPRESS_CURSOR, whose "*" stand-in cursor lands mid-line in grid windows; no COMPILE_V25:
+# the 3.x engine has the video statement (quengle-heglk.c plays it) and runs older games too
+target_compile_definitions(hugo PRIVATE GLK QUENGLE_RESOURCES HUGO_INLINE=static\ inline)
 target_compile_options(hugo PRIVATE -Wall -Wno-unused-but-set-variable)
 target_link_options(hugo PRIVATE -sASYNCIFY_IGNORE_INDIRECT)
 
