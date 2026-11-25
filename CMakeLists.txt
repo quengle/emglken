@@ -138,6 +138,32 @@ target_compile_options(scott PRIVATE $<$<COMPILE_LANGUAGE:C>:-include ${CMAKE_CU
     --use-port=zlib -Wno-implicit-function-declaration)
 target_link_options(scott PRIVATE --use-port=zlib)
 
+# quengle: taylormade, spatterlight's (adventure soft uk: kayleth, rebel planet, temple of terror, blizzard pass…;
+# GPL-2 as scott). stdio over glk streams by quengle-stdio.h
+add_executable(taylor)
+add_sources(taylor "${GT}taylor/"
+    SRCS actions.c alkatraz_screen.c animations.c c64decrunch.c decrypttotloader.c extracommands.c extracttape.c
+    gameinfo.c gameload.c graphics.c loading_screen.c parseinput.c player.c restorestate.c textoutput.c ui.c)
+add_sources(taylor "${GT}common_utils/"
+    SRCS common_file_utils.c common_utils.c companion_search.c layouttext.c memory_allocation.c randomness.c)
+add_sources(taylor "${GT}aiukgraphics/" SRCS aiukpalette.c irmak.c taylordraw.c)
+add_sources(taylor "${GT}decompressz80/" SRCS alkatraz.c tapetzx.c z80snap.c zxscreen.c)
+add_sources(taylor "${GT}common_zxscreen/" SRCS zx_title.c)
+add_sources(taylor "${GT}c64diskimage/" SRCS c64diskimage.c)
+add_sources(taylor "${GT}unp64/"
+    SRCS 6502_emu.cpp exo_util.cpp unp64.cpp scanners/abuze_crunch.cpp scanners/action_packer.cpp scanners/ar.cpp
+    scanners/byte_boiler.cpp scanners/caution.cpp scanners/ccs.cpp scanners/cruel.cpp scanners/eca.cpp
+    scanners/exomizer.cpp scanners/expert.cpp scanners/final_super_comp.cpp scanners/intros.cpp
+    scanners/master_compressor.cpp scanners/megabyte.cpp scanners/mr_cross.cpp scanners/mr_z.cpp
+    scanners/pu_crunch.cpp scanners/scanners.cpp scanners/section8.cpp scanners/tbc_multicomp.cpp
+    scanners/tcs_crunch.cpp scanners/time_cruncher.cpp scanners/xtc.cpp)
+emglken_vm(taylor)
+set_property(TARGET taylor PROPERTY CXX_STANDARD 17)
+set_property(TARGET taylor PROPERTY C_STANDARD 11)
+target_compile_definitions(taylor PRIVATE QUENGLE $<$<COMPILE_LANGUAGE:C>:_XOPEN_SOURCE=600>)
+target_compile_options(taylor PRIVATE $<$<COMPILE_LANGUAGE:C>:-include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-stdio.h>
+    -Wno-implicit-function-declaration)
+
 add_executable(scare)
 add_sources(scare "garglk/terps/scare/"
     SRCS os_glk.c scdebug.c scevents.c scexpr.c scgamest.c scinterf.c sclibrar.c
