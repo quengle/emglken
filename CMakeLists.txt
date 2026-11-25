@@ -89,6 +89,17 @@ target_compile_definitions(hugo PRIVATE GLK QUENGLE_RESOURCES HUGO_INLINE=static
 target_compile_options(hugo PRIVATE -Wall -Wno-unused-but-set-variable)
 target_link_options(hugo PRIVATE -sASYNCIFY_IGNORE_INDIRECT)
 
+# quengle: magnetic scrolls (GPL-2: only in builds with QUENGLE_MAGNETIC, see HANDOFF). autosave in emu.c
+# (QUENGLE), stdio mapped onto glk streams by quengle-magstdio.h
+add_executable(magnetic)
+add_sources(magnetic "garglk/terps/magnetic/Generic/"
+    SRCS emu.c)
+add_sources(magnetic "garglk/terps/magnetic/Glk/"
+    SRCS glk.c)
+emglken_vm(magnetic)
+target_compile_definitions(magnetic PRIVATE MAGNETIC_GLKUNIX QUENGLE)
+target_compile_options(magnetic PRIVATE -include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-magstdio.h -Wno-implicit-function-declaration)
+
 add_executable(scare)
 add_sources(scare "garglk/terps/scare/"
     SRCS os_glk.c scdebug.c scevents.c scexpr.c scgamest.c scinterf.c sclibrar.c
