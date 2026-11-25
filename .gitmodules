@@ -3,7 +3,7 @@
 	url = ../../curiousdannii/asyncglk.git
 [submodule "garglk"]
 	path = garglk
-	url = ../../garglk/garglk.git
+	url = ../garglk.git
 [submodule "git"]
 	path = git
 	url = ../../DavidKinder/Git.git
@@ -12,10 +12,10 @@
 	url = ../../erkyrath/glulxe.git
 [submodule "hugo"]
 	path = hugo
-	url = ../../hugoif/hugo-unix.git
+	url = ../hugo-unix.git
 [submodule "remglk"]
 	path = remglk
-	url = ../../curiousdannii/remglk-rs.git
+	url = ../remglk-rs.git
 [submodule "tads"]
 	path = tads
-	url = ../../tads-intfic/tads-runner.git
+	url = ../tads-runner.git
