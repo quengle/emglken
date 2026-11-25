@@ -137,7 +137,6 @@ zdraw_picture*
 zget_wind_prop*
 zprint_*
 zrandom*
-zshogun_menu*
 zshow_status*
 #zterp_getenv*
 zterp_os_aux_file*
