@@ -174,6 +174,46 @@ target_compile_definitions(level9 PRIVATE QUENGLE BITMAP_DECODER NEED_STRICMP_PR
 target_compile_options(level9 PRIVATE -include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-stdio.h
     -Wno-implicit-function-declaration)
 
+# quengle: scarier, spatterlight's (adrift 3.9/4 + 5; GPL-2: only in builds with QUENGLE_SCARIER, see HANDOFF).
+# autosave in glk/os_glk_autosave.cpp (QUENGLE)
+add_executable(scarier)
+add_sources(scarier "${GT}scarier/"
+    SRCS
+    adrift5/a5blorb.cpp adrift5/a5deobf.cpp adrift5/a5expr.cpp adrift5/a5map.cpp adrift5/a5model.cpp
+    adrift5/a5parse.cpp adrift5/a5rand.cpp adrift5/a5restr.cpp adrift5/a5sb.cpp adrift5/a5sexpr.cpp
+    adrift5/a5state.cpp adrift5/a5xml.cpp adrift5/run/a5run.cpp adrift5/run/a5run_act.cpp
+    adrift5/run/a5run_action.cpp adrift5/run/a5run_conv.cpp adrift5/run/a5run_events.cpp adrift5/run/a5run_ref.cpp
+    adrift5/run/a5run_resp.cpp adrift5/run/a5run_save.cpp adrift5/run/a5run_sort.cpp adrift5/run/a5run_words.cpp
+    adrift5/text/a5text.cpp adrift5/text/a5text_func.cpp adrift5/text/a5text_name.cpp adrift5/text/a5text_render.cpp
+    adrift5/text/a5text_view.cpp common_utils/randomness.c common_utils/sc_garglk.c core/scbattle.cpp
+    core/scdebug.cpp core/scevents.cpp core/scexpr.cpp core/scgamest.cpp core/scinterf.cpp core/sclocale.cpp
+    core/scmap.cpp core/scmemos.cpp core/scnpcs.cpp core/scobjcts.cpp core/scparser.cpp core/scparser_entity.cpp
+    core/scparser_match.cpp core/scparser_pattern.cpp core/scparser_pronoun.cpp core/scprintf.cpp
+    core/scprintf_alr.cpp core/scprintf_buffer.cpp core/scprintf_input.cpp core/scprintf_output.cpp core/scprops.cpp
+    core/scresour.cpp core/screstrs.cpp core/scserial.cpp core/sctaffil.cpp core/sctafpar.cpp
+    core/sctafpar_fixups.cpp core/sctafpar_patches.cpp core/sctasks.cpp core/sctasks_action.cpp
+    core/sctasks_endgame.cpp core/sctasks_move.cpp core/sctasks_run.cpp core/scutils.cpp core/scvars.cpp
+    glk/os_glk.cpp glk/os_glk_a5.cpp glk/os_glk_a5_display.cpp glk/os_glk_autosave.cpp glk/os_glk_commands.cpp
+    glk/os_glk_input.cpp glk/os_glk_locale.cpp glk/os_glk_map.cpp glk/os_glk_output.cpp glk/os_glk_platform.cpp glk/os_glk_quengle.cpp
+    glk/os_glk_resources.cpp glk/os_glk_status.cpp glk/os_glk_symbols.cpp library/sclibrar_battle.cpp
+    library/sclibrar_disambig.cpp library/sclibrar_disambig_400.cpp library/sclibrar_disambig_scan.cpp
+    library/sclibrar_dispatch.cpp library/sclibrar_drop.cpp library/sclibrar_examine.cpp library/sclibrar_go.cpp
+    library/sclibrar_meta.cpp library/sclibrar_misc.cpp library/sclibrar_open.cpp library/sclibrar_print.cpp
+    library/sclibrar_put.cpp library/sclibrar_put_multiple.cpp library/sclibrar_read.cpp library/sclibrar_refuse.cpp
+    library/sclibrar_room.cpp library/sclibrar_sitstand.cpp library/sclibrar_take.cpp
+    library/sclibrar_take_multiple.cpp library/sclibrar_takefrom.cpp library/sclibrar_talk.cpp
+    library/sclibrar_topic.cpp library/sclibrar_verbobj.cpp library/sclibrar_verbs.cpp mapdraw.cpp
+    runner/scrun_dispatch.cpp runner/scrun_input.cpp runner/scrun_match.cpp runner/scrun_match_refusal.cpp
+    runner/scrun_match_run.cpp runner/scrun_respell.cpp runner/scrun_split.cpp runner/scrun_tables.cpp
+    runner/scrunner.cpp)
+emglken_vm(scarier)
+set_property(TARGET scarier PROPERTY CXX_STANDARD 17)
+target_compile_definitions(scarier PRIVATE QUENGLE)
+target_compile_options(scarier PRIVATE --use-port=zlib)
+# the adrift 5 engine recurses deep (xml, expressions, text functions): the default 64 KB stack overflowed into
+# globals (the main window pointer). popups ask from inside a turn, so asyncify unwinds that depth too
+target_link_options(scarier PRIVATE --use-port=zlib -sSTACK_SIZE=4MB -sASYNCIFY_STACK_SIZE=262144)
+
 add_executable(scare)
 add_sources(scare "garglk/terps/scare/"
     SRCS os_glk.c scdebug.c scevents.c scexpr.c scgamest.c scinterf.c sclibrar.c
