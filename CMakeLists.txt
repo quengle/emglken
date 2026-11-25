@@ -164,6 +164,16 @@ target_compile_definitions(taylor PRIVATE QUENGLE $<$<COMPILE_LANGUAGE:C>:_XOPEN
 target_compile_options(taylor PRIVATE $<$<COMPILE_LANGUAGE:C>:-include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-stdio.h>
     -Wno-implicit-function-declaration)
 
+# quengle: level 9 (GPL-2, as magnetic and scott). autosave in level9.c (QUENGLE), stdio over glk by quengle-stdio.h
+add_executable(level9)
+add_sources(level9 "${GT}level9/" SRCS level9.c bitmap.c)
+add_sources(level9 "${GT}level9/Glk/" SRCS glk.c)
+emglken_vm(level9)
+target_compile_definitions(level9 PRIVATE QUENGLE BITMAP_DECODER NEED_STRICMP_PROTOTYPE
+    stricmp=gln_strcasecmp strnicmp=gln_strncasecmp)
+target_compile_options(level9 PRIVATE -include ${CMAKE_CURRENT_SOURCE_DIR}/src/quengle-stdio.h
+    -Wno-implicit-function-declaration)
+
 add_executable(scare)
 add_sources(scare "garglk/terps/scare/"
     SRCS os_glk.c scdebug.c scevents.c scexpr.c scgamest.c scinterf.c sclibrar.c
